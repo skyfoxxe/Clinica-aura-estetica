@@ -15,3 +15,10 @@ Revisão focada em desktop e mobile.
 - Correção global de overflow horizontal.
 
 Todos os dados e contatos são fictícios, para portfólio.
+
+
+## Ajuste v4 — painel “O que você gostaria de cuidar hoje?”
+- As quatro opções agora compartilham exatamente a mesma altura de painel no desktop.
+- A imagem não pode mais alterar a altura do bloco por causa da proporção original da fotografia.
+- “Minha pele”, “Meu rosto”, “Meu corpo” e “Meu momento” usam o mesmo retângulo; apenas imagem, texto e CTA são trocados.
+- Tablet e mobile também receberam limites explícitos para a área da imagem.
