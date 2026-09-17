@@ -1,24 +1,21 @@
-# Clínica Aura — Estética Integrada (v3)
+# Clínica Aura — Estratégico v5
 
-Revisão focada em desktop e mobile.
+Projeto conceitual de portfólio. Clínica, profissionais, contatos e localização são fictícios.
 
-## Ajustes desta versão
-- Imagem de "Minha pele" reduzida e reenquadrada.
-- Botão "Ainda tenho dúvidas" centralizado.
-- Hero mobile reconstruído para separar fotografia e texto.
-- Abas de cuidado reorganizadas em grade 2x2 no celular.
-- Ao tocar em uma aba no mobile, a página leva o usuário ao conteúdo alterado.
-- Imagem do painel reduzida no mobile.
-- CTAs ocupam largura adequada e ficam centralizados.
-- Jornada "Como começa" compactada para telas pequenas.
-- Seções tipográficas e FAQ redimensionados para evitar cortes e overflow.
-- Correção global de overflow horizontal.
+## O que foi preservado
+- O estado visual inicial de “O que você gostaria de cuidar hoje?” permanece igual ao v4.
+- A jornada “Como começa” mantém sua estrutura e aparência-base, inclusive para o print mobile já utilizado.
+- As mudanças estratégicas entram por comportamento após interação e por novas seções fora das áreas fotografadas.
 
-Todos os dados e contatos são fictícios, para portfólio.
-
-
-## Ajuste v4 — painel “O que você gostaria de cuidar hoje?”
-- As quatro opções agora compartilham exatamente a mesma altura de painel no desktop.
-- A imagem não pode mais alterar a altura do bloco por causa da proporção original da fotografia.
-- “Minha pele”, “Meu rosto”, “Meu corpo” e “Meu momento” usam o mesmo retângulo; apenas imagem, texto e CTA são trocados.
-- Tablet e mobile também receberam limites explícitos para a área da imagem.
+## Nova camada Estratégica
+- O site lembra a escolha entre Pele / Rosto / Corpo / Momento.
+- Nova segunda escolha: Prevenção / Uma queixa / Possibilidades / Bem-estar.
+- O conteúdo reage à combinação das escolhas.
+- “Seu caminho na Aura” acompanha a visitante até a CTA final.
+- CTA flutuante muda de contexto.
+- Mensagem de WhatsApp é montada com base no percurso.
+- Como o projeto é fictício, o WhatsApp abre uma simulação e não envia mensagem.
+- Microinterações de cursor apenas em desktop.
+- Transições editoriais suaves e suporte a prefers-reduced-motion.
+- SEO local conceitual para Cuiabá.
+- robots.txt + sitemap.xml.
