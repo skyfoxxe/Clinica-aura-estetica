@@ -5,20 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clínica Aura · Estética integrada em Cuiabá | Projeto conceitual</title>
   <meta name="description" content="Projeto conceitual de site para uma clínica de estética integrada em Cuiabá: cuidados faciais, corporais e de bem-estar com avaliação individualizada e conversa pelo WhatsApp.">
-  <meta name="theme-color" content="#5B2438">
+  <meta name="theme-color" content="#F7F2EA">
   <link rel="canonical" href="https://clinicaauraestetica.vercel.app/">
   <meta property="og:title" content="Clínica Aura · Estética integrada em Cuiabá">
   <meta property="og:description" content="Cuidar da aparência sem perder aquilo que faz você parecer você. Projeto conceitual de portfólio.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://clinicaauraestetica.vercel.app/">
-  <meta property="og:image" content="https://clinicaauraestetica.vercel.app/assets/retrato-editorial.webp">
+  <meta property="og:image" content="https://clinicaauraestetica.vercel.app/assets/ritual-oleo.webp">
   <meta property="og:locale" content="pt_BR">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%235B2438'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='34' fill='%23FBF8F4'%3EA%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F7F2EA'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Georgia,serif' font-size='42' fill='%235B2438'%3EA%3C/text%3E%3C/svg%3E">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="assets/retrato-editorial.webp">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
   <script type="application/ld+json">
@@ -38,23 +37,20 @@
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-  <p class="concept-bar" role="note"><strong>Projeto conceitual.</strong> Clínica, profissionais e contatos são fictícios, criados para portfólio.</p>
+  <p class="concept-bar" role="note">Projeto conceitual. Clínica, profissionais e contatos são fictícios, criados para portfólio.</p>
 
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="brand" href="#topo" aria-label="Clínica Aura, voltar ao início">
-        <span class="brand-mark" aria-hidden="true">A</span>
-        <span class="brand-name">Aura <em>estética integrada</em></span>
-      </a>
+      <a class="wordmark" href="#topo" aria-label="Clínica Aura, voltar ao início">Aura</a>
 
       <nav class="main-nav" id="main-nav" aria-label="Principal">
+        <a href="#casa">A casa</a>
         <a href="#caminho">Seu caminho</a>
         <a href="#protocolos">Protocolos</a>
-        <a href="#jornada">Como começa</a>
         <a href="#duvidas">Dúvidas</a>
       </nav>
 
-      <a class="btn btn-small header-cta" href="#" data-wa="geral">Agendar avaliação</a>
+      <a class="text-link header-cta" href="#" data-wa="geral">Agendar avaliação</a>
 
       <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">
         <span></span><span></span>
@@ -63,219 +59,185 @@
   </header>
 
   <main id="conteudo">
-    <!-- HERO -->
-    <section class="hero" id="topo">
+    <!-- I · Abertura -->
+    <section class="hero" id="topo" aria-labelledby="hero-title">
       <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="kicker" data-reveal>Estética integrada · Cuiabá, MT</p>
-          <h1 data-reveal>Cuidar da aparência sem perder aquilo que faz você <em>parecer você.</em></h1>
-          <p class="lede" data-reveal>Tratamentos faciais, corporais e de bem-estar que começam por uma avaliação sem pressa. Você entende as possibilidades antes de decidir qualquer coisa.</p>
+        <div class="hero-main">
+          <p class="label label-accent" data-reveal>Estética integrada · Cuiabá</p>
+          <h1 id="hero-title" data-reveal>Cuidar da aparência sem perder aquilo que faz você <em>parecer você.</em></h1>
+          <p class="hero-sub" data-reveal>Tratamentos faciais, corporais e de bem-estar que começam por uma avaliação sem pressa.</p>
           <div class="hero-actions" data-reveal>
-            <a class="btn" href="#caminho">Montar meu caminho</a>
-            <a class="link-arrow" href="#" data-wa="geral">Falar pelo WhatsApp</a>
+            <a class="btn" href="#" data-wa="geral">Agendar avaliação</a>
+            <a class="text-link" href="#caminho">Descobrir meu caminho</a>
           </div>
         </div>
 
-        <figure class="hero-figure" data-reveal>
-          <img src="assets/retrato-editorial.webp" width="733" height="1100" alt="Retrato editorial de uma mulher com cabelo loiro em fundo cinza" fetchpriority="high">
-          <figcaption>
-            <span>Primeira consulta</span>
-            <strong>Avaliação individual, sem compromisso de procedimento.</strong>
-          </figcaption>
+        <aside class="hero-index" aria-label="O que cuidamos" data-reveal>
+          <p class="label">O que cuidamos</p>
+          <ol>
+            <li><a href="#caminho" data-pick="pele"><span>i</span>Pele</a></li>
+            <li><a href="#caminho" data-pick="rosto"><span>ii</span>Rosto</a></li>
+            <li><a href="#caminho" data-pick="corpo"><span>iii</span>Corpo</a></li>
+            <li><a href="#caminho" data-pick="momento"><span>iv</span>Bem-estar</a></li>
+          </ol>
+        </aside>
+      </div>
+
+      <figure class="wrap plate" data-reveal>
+        <img src="assets/pedras-quentes.webp" width="1400" height="933" alt="Sessão de bem-estar com pedras quentes e orquídeas brancas" fetchpriority="high">
+        <figcaption class="label">Primeira consulta · avaliação individual, sem compromisso de procedimento</figcaption>
+      </figure>
+    </section>
+
+    <!-- II · A casa -->
+    <section class="house" id="casa" aria-labelledby="house-title">
+      <div class="wrap house-grid">
+        <div class="house-copy">
+          <p class="label label-accent" data-reveal>A casa</p>
+          <h2 id="house-title" data-reveal>Sua aparência não precisa seguir uma <em>tendência.</em></h2>
+          <ul class="creed">
+            <li data-reveal>Nem todo rosto precisa ter o mesmo contorno.</li>
+            <li data-reveal>Nem toda pele precisa parecer filtrada.</li>
+            <li data-reveal>Nem todo sinal precisa desaparecer.</li>
+          </ul>
+          <p class="house-close" data-reveal>Nosso objetivo não é criar outra versão de você. É cuidar da que já existe.</p>
+
+          <dl class="facts" data-reveal>
+            <div><dt>Onde</dt><dd>Cuiabá, Mato Grosso</dd></div>
+            <div><dt>Atendimento</dt><dd>Com hora marcada, uma pessoa por vez</dd></div>
+            <div><dt>Cuidamos com</dt><dd>Consulta sem pressa, explicações claras, privacidade e espaço para dizer não</dd></div>
+          </dl>
+        </div>
+
+        <figure class="house-figure" data-reveal>
+          <img src="assets/retrato-editorial.webp" width="733" height="1100" alt="Retrato editorial de uma mulher de cabelo loiro em fundo cinza" loading="lazy">
         </figure>
       </div>
-
-      <ul class="wrap hero-values" aria-label="Como cuidamos">
-        <li>Consulta sem pressa</li>
-        <li>Explicações claras</li>
-        <li>Privacidade</li>
-        <li>Espaço para dizer não</li>
-      </ul>
     </section>
 
-    <!-- MANIFESTO -->
-    <section class="manifesto" aria-labelledby="manifesto-title">
-      <div class="wrap manifesto-grid">
-        <h2 id="manifesto-title" data-reveal>Sua aparência não precisa seguir uma tendência.</h2>
-        <div class="manifesto-lines">
-          <p data-reveal>Nem todo rosto precisa ter o mesmo contorno.</p>
-          <p data-reveal>Nem toda pele precisa parecer filtrada.</p>
-          <p data-reveal>Nem todo sinal precisa desaparecer.</p>
-          <p class="manifesto-close" data-reveal>Nosso objetivo não é criar outra versão de você. <em>É cuidar da que já existe.</em></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- GUIA -->
+    <!-- III · Seu caminho -->
     <section class="guide" id="caminho" aria-labelledby="guide-title">
       <div class="wrap">
         <header class="section-head" data-reveal>
-          <p class="kicker">Seu caminho na Aura</p>
-          <h2 id="guide-title">Duas escolhas e a conversa já começa com contexto.</h2>
-          <p>Você não precisa saber o nome de um procedimento. Conte o que quer cuidar e o que busca agora. A mensagem para o WhatsApp é montada a partir disso.</p>
+          <p class="label label-accent">Seu caminho</p>
+          <h2 id="guide-title">Duas escolhas, e a conversa já começa com <em>contexto.</em></h2>
+          <p>Não é preciso saber o nome de um procedimento. Conte o que quer cuidar e o que procura agora.</p>
         </header>
 
         <div class="guide-grid">
           <div class="guide-steps">
             <fieldset class="choice" data-reveal>
-              <legend><span class="step-num">1</span> O que você gostaria de cuidar?</legend>
-              <div class="choice-options choice-area">
-                <label><input type="radio" name="area" value="pele" checked><span><strong>Minha pele</strong><small>Textura, viço, manchas, oleosidade</small></span></label>
-                <label><input type="radio" name="area" value="rosto"><span><strong>Meu rosto</strong><small>Cansaço, firmeza, contorno</small></span></label>
-                <label><input type="radio" name="area" value="corpo"><span><strong>Meu corpo</strong><small>Textura, firmeza, contorno corporal</small></span></label>
-                <label><input type="radio" name="area" value="momento"><span><strong>Meu momento</strong><small>Pausa, bem-estar, tempo para mim</small></span></label>
-              </div>
+              <legend class="label">1 · O que você gostaria de cuidar</legend>
+              <label><input type="radio" name="area" value="pele" checked><span class="choice-row"><span class="choice-name">Minha pele</span><span class="choice-hint">Textura, viço, manchas</span></span></label>
+              <label><input type="radio" name="area" value="rosto"><span class="choice-row"><span class="choice-name">Meu rosto</span><span class="choice-hint">Cansaço, firmeza, contorno</span></span></label>
+              <label><input type="radio" name="area" value="corpo"><span class="choice-row"><span class="choice-name">Meu corpo</span><span class="choice-hint">Textura, firmeza, contorno</span></span></label>
+              <label><input type="radio" name="area" value="momento"><span class="choice-row"><span class="choice-name">Meu momento</span><span class="choice-hint">Pausa e bem-estar</span></span></label>
             </fieldset>
 
             <fieldset class="choice" data-reveal>
-              <legend><span class="step-num">2</span> O que você busca neste momento?</legend>
-              <div class="choice-options choice-intent">
-                <label><input type="radio" name="intent" value="prevencao" checked><span>Prevenção e cuidado contínuo</span></label>
-                <label><input type="radio" name="intent" value="queixa"><span>Avaliar uma queixa específica</span></label>
-                <label><input type="radio" name="intent" value="possibilidades"><span>Conhecer possibilidades</span></label>
-                <label><input type="radio" name="intent" value="bem-estar"><span>Bem-estar e tempo para mim</span></label>
-              </div>
+              <legend class="label">2 · O que você procura agora</legend>
+              <label><input type="radio" name="intent" value="prevencao" checked><span class="choice-row"><span class="choice-name">Prevenção e cuidado contínuo</span></span></label>
+              <label><input type="radio" name="intent" value="queixa"><span class="choice-row"><span class="choice-name">Avaliar uma queixa específica</span></span></label>
+              <label><input type="radio" name="intent" value="possibilidades"><span class="choice-row"><span class="choice-name">Conhecer possibilidades</span></span></label>
+              <label><input type="radio" name="intent" value="bem-estar"><span class="choice-row"><span class="choice-name">Bem-estar e tempo para mim</span></span></label>
             </fieldset>
 
             <p class="guide-aside" data-reveal>Já sabe qual procedimento quer? <a href="#" data-wa="procedimento">Pergunte direto pelo WhatsApp</a>.</p>
           </div>
 
-          <article class="result" aria-live="polite" data-reveal>
+          <article class="result" aria-live="polite" aria-atomic="true" data-reveal>
             <div class="result-media">
               <img id="result-image" src="assets/ritual-oleo.webp" width="1400" height="933" alt="Mãos aplicando gotas de óleo facial" loading="lazy">
-              <span class="result-protocol" id="result-protocol">Ponto de partida: Aura Pele</span>
             </div>
-            <div class="result-body">
-              <p class="result-label">Seu caminho até aqui</p>
-              <h3 id="result-title">Minha pele · Prevenção e cuidado contínuo</h3>
-              <p id="result-copy">Um cuidado contínuo começa entendendo como sua pele está hoje, o que você quer preservar e quais hábitos fazem sentido para a sua rotina.</p>
+            <p class="label"><span id="result-protocol">Ponto de partida · Aura Pele</span></p>
+            <h3 id="result-title">Minha pele · Prevenção e cuidado contínuo</h3>
+            <p id="result-copy">Um cuidado contínuo começa entendendo como sua pele está hoje, o que você quer preservar e quais hábitos fazem sentido para a sua rotina.</p>
 
-              <div class="bubble">
-                <span class="bubble-label">Mensagem que vamos preparar</span>
-                <p id="result-message"></p>
-              </div>
+            <figure class="message">
+              <figcaption class="label">A mensagem que preparamos</figcaption>
+              <blockquote id="result-message"></blockquote>
+            </figure>
 
-              <a class="btn btn-block" href="#" data-wa="caminho">Enviar esse caminho pelo WhatsApp</a>
-            </div>
+            <a class="btn" href="#" data-wa="caminho">Enviar pelo WhatsApp</a>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- PROTOCOLOS -->
+    <!-- IV · Protocolos -->
     <section class="protocols" id="protocolos" aria-labelledby="protocols-title">
       <div class="wrap">
         <header class="section-head section-head-split" data-reveal>
           <div>
-            <p class="kicker">Protocolos Aura</p>
-            <h2 id="protocols-title">Pontos de partida. Nunca respostas automáticas.</h2>
+            <p class="label label-accent">Protocolos Aura</p>
+            <h2 id="protocols-title">Pontos de partida. Nunca respostas <em>automáticas.</em></h2>
           </div>
           <p>Cada protocolo é ajustado depois da avaliação. Frequência, combinação e intensidade dependem de você, não de um pacote fechado.</p>
         </header>
 
         <ol class="protocol-list">
           <li data-reveal data-area="pele">
-            <span class="protocol-num">01</span>
-            <h3>Aura Pele</h3>
+            <span class="numeral">i</span>
+            <div class="protocol-name"><span class="suggested label">Sugerido para você</span><h3>Aura Pele</h3></div>
             <p>Textura, viço e uniformidade, com uma rotina possível entre as sessões.</p>
-            <a class="link-arrow" href="#" data-wa="protocolo" data-protocol="Aura Pele">Perguntar sobre</a>
+            <a class="text-link" href="#" data-wa="protocolo" data-protocol="Aura Pele">Perguntar<span class="visually-hidden"> sobre Aura Pele</span></a>
           </li>
           <li data-reveal data-area="rosto">
-            <span class="protocol-num">02</span>
-            <h3>Aura Fresh</h3>
+            <span class="numeral">ii</span>
+            <div class="protocol-name"><span class="suggested label">Sugerido para você</span><h3>Aura Fresh</h3></div>
             <p>Manutenção, hidratação e aparência descansada, preservando suas características.</p>
-            <a class="link-arrow" href="#" data-wa="protocolo" data-protocol="Aura Fresh">Perguntar sobre</a>
+            <a class="text-link" href="#" data-wa="protocolo" data-protocol="Aura Fresh">Perguntar<span class="visually-hidden"> sobre Aura Fresh</span></a>
           </li>
           <li data-reveal data-area="corpo">
-            <span class="protocol-num">03</span>
-            <h3>Aura Contorno</h3>
+            <span class="numeral">iii</span>
+            <div class="protocol-name"><span class="suggested label">Sugerido para você</span><h3>Aura Contorno</h3></div>
             <p>Cuidados corporais de textura e firmeza, definidos a partir da avaliação.</p>
-            <a class="link-arrow" href="#" data-wa="protocolo" data-protocol="Aura Contorno">Perguntar sobre</a>
+            <a class="text-link" href="#" data-wa="protocolo" data-protocol="Aura Contorno">Perguntar<span class="visually-hidden"> sobre Aura Contorno</span></a>
           </li>
           <li data-reveal data-area="momento">
-            <span class="protocol-num">04</span>
-            <h3>Aura Reset</h3>
+            <span class="numeral">iv</span>
+            <div class="protocol-name"><span class="suggested label">Sugerido para você</span><h3>Aura Reset</h3></div>
             <p>Uma experiência mais longa de cuidado e bem-estar, para desacelerar de verdade.</p>
-            <a class="link-arrow" href="#" data-wa="protocolo" data-protocol="Aura Reset">Perguntar sobre</a>
+            <a class="text-link" href="#" data-wa="protocolo" data-protocol="Aura Reset">Perguntar<span class="visually-hidden"> sobre Aura Reset</span></a>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- JORNADA -->
+    <!-- V · Como começa -->
     <section class="journey" id="jornada" aria-labelledby="journey-title">
       <div class="wrap">
         <header class="section-head" data-reveal>
-          <p class="kicker">Como começa</p>
-          <h2 id="journey-title">Estética que começa pela escuta.</h2>
-          <p>O que incomoda? O que você quer preservar? Como quer se sentir quando se olhar no espelho? A primeira visita parte dessas perguntas.</p>
+          <p class="label label-accent">Como começa</p>
+          <h2 id="journey-title">Estética que começa pela <em>escuta.</em></h2>
+          <p>O que incomoda? O que você quer preservar? Como quer se sentir diante do espelho? A primeira visita parte dessas perguntas.</p>
         </header>
 
         <ol class="journey-list">
-          <li data-reveal>
-            <span>01</span>
-            <h3>Conversa</h3>
-            <p>Você conta o que gostaria de cuidar, suas experiências anteriores e o que espera.</p>
-          </li>
-          <li data-reveal>
-            <span>02</span>
-            <h3>Avaliação</h3>
-            <p>Observamos pele, rosto ou corpo com atenção ao objetivo que você trouxe.</p>
-          </li>
-          <li data-reveal>
-            <span>03</span>
-            <h3>Possibilidades</h3>
-            <p>Explicamos os caminhos, as diferenças entre eles e o que não faz sentido para você.</p>
-          </li>
-          <li data-reveal>
-            <span>04</span>
-            <h3>Plano de cuidado</h3>
-            <p>Quando indicado, montamos uma proposta individual, com tempo para pensar.</p>
-          </li>
-          <li data-reveal>
-            <span>05</span>
-            <h3>Acompanhamento</h3>
-            <p>O cuidado continua depois da sessão, com retorno e ajustes quando necessário.</p>
-          </li>
+          <li data-reveal><span class="numeral">i</span><h3>Conversa</h3><p>Você conta o que gostaria de cuidar, suas experiências anteriores e o que espera.</p></li>
+          <li data-reveal><span class="numeral">ii</span><h3>Avaliação</h3><p>Observamos pele, rosto ou corpo com atenção ao objetivo que você trouxe.</p></li>
+          <li data-reveal><span class="numeral">iii</span><h3>Possibilidades</h3><p>Explicamos os caminhos, as diferenças entre eles e o que não faz sentido para você.</p></li>
+          <li data-reveal><span class="numeral">iv</span><h3>Plano</h3><p>Quando indicado, montamos uma proposta individual, com tempo para pensar.</p></li>
+          <li data-reveal><span class="numeral">v</span><h3>Acompanhamento</h3><p>O cuidado continua depois da sessão, com retorno e ajustes quando necessário.</p></li>
         </ol>
       </div>
     </section>
 
-    <!-- CLÍNICA -->
-    <section class="clinic" aria-labelledby="clinic-title">
-      <div class="wrap clinic-grid">
-        <figure class="clinic-figure" data-reveal>
-          <img src="assets/retrato-pele.webp" width="733" height="1100" alt="Retrato de mulher de cabelo ruivo com franja e pele uniforme" loading="lazy">
-        </figure>
-        <div class="clinic-copy">
-          <p class="kicker" data-reveal>A clínica</p>
-          <h2 id="clinic-title" data-reveal>Um lugar pensado para o seu tempo de cuidado.</h2>
-          <p data-reveal>A Aura nasceu de uma proposta simples: que cada pessoa entenda suas possibilidades antes de decidir. Sem protocolos automáticos, sem exageros e sem a ideia de que todo mundo precisa corrigir alguma coisa.</p>
-          <dl class="clinic-facts" data-reveal>
-            <div><dt>Onde</dt><dd>Cuiabá, Mato Grosso</dd></div>
-            <div><dt>Atendimento</dt><dd>Com hora marcada, um paciente por vez</dd></div>
-            <div><dt>Primeiro passo</dt><dd>Conversa pelo WhatsApp ou avaliação presencial</dd></div>
-          </dl>
-          <p class="fine" data-reveal>Clínica e profissionais fictícios, para fins de portfólio.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
+    <!-- VI · Dúvidas -->
     <section class="faq" id="duvidas" aria-labelledby="faq-title">
       <div class="wrap faq-grid">
         <header class="section-head" data-reveal>
-          <p class="kicker">Dúvidas</p>
-          <h2 id="faq-title">Antes da sua primeira visita.</h2>
+          <p class="label label-accent">Dúvidas</p>
+          <h2 id="faq-title">Antes da sua primeira <em>visita.</em></h2>
         </header>
         <div class="faq-list">
           <details data-reveal>
             <summary>Preciso saber qual procedimento quero fazer?</summary>
-            <p>Não. A avaliação existe justamente para ajudar a entender quais possibilidades podem fazer sentido para você.</p>
+            <p>Não. A avaliação existe justamente para ajudar a entender quais possibilidades fazem sentido para você.</p>
           </details>
           <details data-reveal>
             <summary>Posso marcar apenas uma avaliação?</summary>
-            <p>Sim. Fazer a avaliação não significa que você precise realizar um procedimento naquele dia.</p>
+            <p>Sim. Fazer a avaliação não significa realizar um procedimento naquele dia.</p>
           </details>
           <details data-reveal>
             <summary>Os mesmos tratamentos funcionam para todo mundo?</summary>
@@ -283,25 +245,27 @@
           </details>
           <details data-reveal>
             <summary>Posso conversar antes de marcar?</summary>
-            <p>Sim. Pelo WhatsApp você pode explicar o que gostaria de cuidar e tirar dúvidas antes de decidir.</p>
+            <p>Sim. Pelo WhatsApp você explica o que gostaria de cuidar e tira dúvidas antes de decidir.</p>
           </details>
         </div>
       </div>
     </section>
 
-    <!-- CTA FINAL -->
+    <!-- VII · Fecho -->
     <section class="closing" aria-labelledby="closing-title">
       <div class="wrap closing-grid">
         <div>
-          <p class="kicker" data-reveal>Talvez você não precise decidir o tratamento agora.</p>
-          <h2 id="closing-title" data-reveal>O primeiro cuidado pode ser uma conversa.</h2>
+          <p class="label label-accent" data-reveal>Talvez você não precise decidir agora</p>
+          <h2 id="closing-title" data-reveal>O primeiro cuidado pode ser uma <em>conversa.</em></h2>
         </div>
-        <div class="closing-card" data-reveal>
-          <span>Seu caminho na Aura</span>
-          <strong id="closing-path">Minha pele · Prevenção e cuidado contínuo</strong>
-          <a class="btn btn-light btn-block" href="#" data-wa="caminho">Conversar sobre meu caminho</a>
-          <a class="link-arrow link-light" href="#" data-wa="duvidas">Ainda tenho dúvidas</a>
-          <a class="link-change" href="#caminho">Mudar minhas escolhas</a>
+        <div class="closing-actions" data-reveal>
+          <p class="label">Seu caminho</p>
+          <p class="closing-path" id="closing-path">Minha pele · Prevenção e cuidado contínuo</p>
+          <a class="btn" href="#" data-wa="caminho">Conversar sobre meu caminho</a>
+          <div class="closing-links">
+            <a class="text-link" href="#" data-wa="duvidas">Ainda tenho dúvidas</a>
+            <a class="text-link text-link-quiet" href="#caminho">Mudar escolhas</a>
+          </div>
         </div>
       </div>
     </section>
@@ -309,34 +273,32 @@
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <a class="brand brand-light" href="#topo" aria-label="Clínica Aura, voltar ao início">
-        <span class="brand-mark" aria-hidden="true">A</span>
-        <span class="brand-name">Aura <em>estética integrada</em></span>
-      </a>
+      <a class="wordmark" href="#topo" aria-label="Clínica Aura, voltar ao início">Aura</a>
       <nav class="footer-nav" aria-label="Rodapé">
+        <a href="#casa">A casa</a>
         <a href="#caminho">Seu caminho</a>
         <a href="#protocolos">Protocolos</a>
-        <a href="#jornada">Como começa</a>
         <a href="#duvidas">Dúvidas</a>
       </nav>
       <p>Projeto fictício desenvolvido para portfólio. Imagens: Unsplash.</p>
     </div>
   </footer>
 
-  <a class="wa-float" href="#" data-wa="caminho" aria-label="Conversar pelo WhatsApp sobre o caminho escolhido">
-    <span class="wa-dot" aria-hidden="true"></span>
-    <span class="wa-float-label" id="wa-float-label">Conversar sobre pele</span>
+  <a class="wa-bar" href="#" data-wa="caminho">
+    <span class="label">Conversar sobre</span>
+    <span class="wa-bar-topic" id="wa-bar-topic">pele</span>
+    <span aria-hidden="true">→</span>
   </a>
 
   <dialog class="demo" id="demo" aria-labelledby="demo-title">
     <form method="dialog" class="demo-inner">
       <button class="demo-close" value="close" aria-label="Fechar">×</button>
-      <p class="kicker">WhatsApp contextual · demonstração</p>
-      <h2 id="demo-title">A conversa já começaria com contexto.</h2>
+      <p class="label label-accent">Demonstração</p>
+      <h2 id="demo-title">A conversa já começaria com <em>contexto.</em></h2>
       <p>Em um projeto real, este botão abriria o WhatsApp da clínica com esta mensagem pronta para enviar:</p>
-      <div class="bubble bubble-dialog"><p id="demo-message"></p></div>
+      <blockquote class="demo-message" id="demo-message"></blockquote>
       <p class="fine">Projeto conceitual. Nenhuma mensagem é enviada.</p>
-      <button class="btn btn-block" value="close">Entendi</button>
+      <button class="btn" value="close">Entendi</button>
     </form>
   </dialog>
 

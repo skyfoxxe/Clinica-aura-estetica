@@ -4,17 +4,16 @@ Projeto conceitual de portfólio. Clínica, profissionais, contatos e localizaç
 
 Site estático (HTML, CSS e JavaScript, sem dependências). Publicado em https://clinicaauraestetica.vercel.app/.
 
-## Versão 6 · refeita
+## Versão 7 · quiet luxury
 
-A versão anterior tinha 15 seções e cinco mecanismos de escolha que se sobrepunham (abas de cuidado, cartões "já sei / não sei", objetivo, "como quer se sentir" e protocolos). A v6 condensa tudo em uma página mais curta, com um único guia.
+Redesenho da v6 seguindo a skill **quiet-luxury** (pacote design-taste) e revisado com as skills **taste-design-review**, **taste-accessibility** e **taste-code-review**.
 
-- **Hero** com a promessa da marca, retrato editorial e os quatro valores de atendimento.
-- **Manifesto** de naturalidade ("Sua aparência não precisa seguir uma tendência").
-- **Seu caminho na Aura**: duas escolhas (área + objetivo) atualizam na hora o texto, a imagem, o protocolo sugerido e a mensagem de WhatsApp que será enviada. A escolha fica salva no navegador.
-- **Protocolos Aura** com o protocolo sugerido destacado.
-- **Como começa**: as cinco etapas visíveis de uma vez, sem cliques.
-- **A clínica**, **Dúvidas** (com `<details>`, acessível sem JavaScript) e **CTA final** com o caminho escolhido.
-- Botão flutuante de WhatsApp contextual, que se esconde onde já existe um botão de conversa visível.
+- **Paleta**: marfim `#F7F2EA`, painel `#EFE8DC`, tinta espresso `#17130F`, texto `#6E655A` e um único acento, o vinho da marca `#5B2438`. Sem branco puro, sem gradientes.
+- **Tipografia**: Cormorant Garamond nos títulos (itálico em uma palavra por título) e Manrope no texto; rótulos em caixa alta espaçada.
+- **Composição**: linhas finas no lugar de cartões, colunas editoriais assimétricas, seções com 112 a 184 px de respiro, fotos dessaturadas com margens.
+- **Seções**: abertura com índice (Pele, Rosto, Corpo, Bem-estar), A casa (manifesto e fatos), Seu caminho (guia de duas escolhas que monta a mensagem de WhatsApp), Protocolos, Como começa, Dúvidas e Fecho.
+- **Um botão preenchido por tela**; as demais ações são links discretos. No celular, uma barra fina de conversa aparece fora das áreas que já têm botão.
+- Movimento mínimo: uma entrada suave por bloco (12 px, 650 ms) e `prefers-reduced-motion`.
 
 ## WhatsApp
 
@@ -22,7 +21,7 @@ Como o projeto é fictício, os botões abrem uma simulação com a mensagem pro
 
 ## Detalhes técnicos
 
-- Paleta original mantida (vinho `#5B2438`, rosé, creme). Tipografia: Newsreader + Manrope (Google Fonts).
+- Fontes via Google Fonts (Cormorant Garamond e Manrope).
 - Imagens locais em `assets/` (WebP, origem Unsplash), em vez de links externos.
 - Navegação por teclado, foco visível, `prefers-reduced-motion`, rótulos acessíveis.
 - SEO: título, descrição, canonical, Open Graph, JSON-LD, `robots.txt` e `sitemap.xml`.

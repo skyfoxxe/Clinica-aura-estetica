@@ -85,16 +85,17 @@
   const resultImage = $('#result-image');
   const resultEl = $('.result');
   let firstRender = true;
+  let pendingUpdate = null;
 
   function render() {
     const area = AREAS[state.area];
     const update = () => {
       $('#result-title').textContent = pathLabel();
       $('#result-copy').textContent = COPY[state.area][state.intent];
-      $('#result-protocol').textContent = `Ponto de partida: ${area.protocol}`;
+      $('#result-protocol').textContent = `Ponto de partida · ${area.protocol}`;
       $('#result-message').textContent = messages.caminho();
       $('#closing-path').textContent = pathLabel();
-      $('#wa-float-label').textContent = `Conversar sobre ${area.short}`;
+      $('#wa-bar-topic').textContent = area.short;
 
       if (resultImage && resultImage.getAttribute('src') !== area.image) resultImage.src = area.image;
       if (resultImage) {
@@ -110,8 +111,10 @@
       firstRender = false;
       return;
     }
+    // cliques rápidos em sequência: só a última troca é aplicada
+    clearTimeout(pendingUpdate);
     resultEl.classList.add('is-changing');
-    setTimeout(() => {
+    pendingUpdate = setTimeout(() => {
       update();
       resultEl.classList.remove('is-changing');
     }, 180);
@@ -140,6 +143,16 @@
     });
   });
 
+  // atalhos do índice da abertura: chegam ao guia com a área já escolhida
+  $$('[data-pick]').forEach(link => link.addEventListener('click', () => {
+    const input = $(`input[name="area"][value="${link.dataset.pick}"]`);
+    if (!input) return;
+    input.checked = true;
+    state.area = input.value;
+    persist();
+    render();
+  }));
+
   function persist() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { /* ignora */ }
   }
@@ -163,11 +176,7 @@
 
       event.preventDefault();
       $('#demo-message').textContent = text;
-      if (dialog && typeof dialog.showModal === 'function') {
-        dialog.showModal();
-      } else {
-        window.alert(text);
-      }
+      if (dialog && typeof dialog.showModal === 'function') dialog.showModal();
     });
   });
 
@@ -186,15 +195,25 @@
     toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
   });
 
-  $$('a', nav).forEach(a => a.addEventListener('click', () => {
+  const closeMenu = () => {
     header.classList.remove('menu-open');
     toggle?.setAttribute('aria-expanded', 'false');
-  }));
+    toggle?.setAttribute('aria-label', 'Abrir menu');
+  };
 
-  /* ---------- cabeçalho e botão flutuante ---------- */
-  const floatBtn = $('.wa-float');
+  $$('a', nav).forEach(a => a.addEventListener('click', closeMenu));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && header.classList.contains('menu-open')) {
+      closeMenu();
+      toggle?.focus();
+    }
+  });
+
+  /* ---------- barra de conversa (celular) ---------- */
+  const floatBtn = $('.wa-bar');
   const hero = $('.hero');
-  // o botão flutuante some onde já existe um botão de conversa visível (guia e chamada final)
+  // a barra some onde já existe um botão de conversa visível (guia e chamada final)
   const quietZones = $$('.guide, .closing');
 
   if ('IntersectionObserver' in window && floatBtn && hero) {
@@ -207,7 +226,6 @@
 
     new IntersectionObserver(([entry]) => {
       heroVisible = entry.isIntersecting;
-      header.classList.toggle('is-scrolled', !heroVisible);
       sync();
     }, { rootMargin: '-30% 0px 0px 0px' }).observe(hero);
 
