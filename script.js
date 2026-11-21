@@ -1,163 +1,174 @@
-/* Clínica Aura · interações
-   Projeto conceitual: os botões de WhatsApp abrem uma simulação em vez de enviar mensagens. */
+/* Aura · interações
+   Projeto conceitual: os botões de WhatsApp abrem uma demonstração em vez de enviar mensagens. */
 
 (() => {
   'use strict';
 
   const WHATSAPP_NUMBER = ''; // Em um projeto real: '5565999999999'. Vazio = modo demonstração.
-  const STORAGE_KEY = 'aura-caminho';
+  const STORAGE_KEY = 'aura-consulta';
 
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- conteúdo da consulta ---------- */
   const AREAS = {
-    pele: {
-      label: 'Minha pele', short: 'pele', protocol: 'Aura Pele',
-      image: 'assets/ritual-oleo.webp', alt: 'Mãos aplicando gotas de óleo facial', position: '50% 50%'
-    },
-    rosto: {
-      label: 'Meu rosto', short: 'rosto', protocol: 'Aura Fresh',
-      image: 'assets/retrato-pele.webp', alt: 'Retrato de mulher de cabelo ruivo com franja', position: '50% 32%'
-    },
-    corpo: {
-      label: 'Meu corpo', short: 'corpo', protocol: 'Aura Contorno',
-      image: 'assets/pedras-quentes.webp', alt: 'Pedras quentes alinhadas sobre as costas durante uma sessão', position: '35% 50%'
-    },
-    momento: {
-      label: 'Meu momento', short: 'bem-estar', protocol: 'Aura Reset',
-      image: 'assets/pedras-quentes.webp', alt: 'Orquídeas brancas e pedras quentes em uma sessão de bem-estar', position: '92% 50%'
-    }
+    pele:    { care: 'da sua pele',          mine: 'da minha pele',         ritual: 'Aura Pele' },
+    rosto:   { care: 'do seu rosto',         mine: 'do meu rosto',          ritual: 'Aura Fresh' },
+    corpo:   { care: 'do seu corpo',         mine: 'do meu corpo',          ritual: 'Aura Contorno' },
+    momento: { care: 'de um momento só seu', mine: 'de um momento só meu',  ritual: 'Aura Reset' }
   };
 
   const INTENTS = {
-    prevencao: 'Prevenção e cuidado contínuo',
-    queixa: 'Avaliar uma queixa específica',
-    possibilidades: 'Conhecer possibilidades',
-    'bem-estar': 'Bem-estar e tempo para mim'
+    prevencao:      { phrase: 'com foco em prevenir e manter' },
+    queixa:         { phrase: 'a partir de uma queixa específica' },
+    possibilidades: { phrase: 'para entender as possibilidades' },
+    'bem-estar':    { phrase: 'como uma forma de desacelerar' }
+  };
+
+  const FEELS = {
+    luz:       'luminosidade',
+    descanso:  'descanso',
+    cuidado:   'cuidado',
+    confianca: 'confiança'
   };
 
   const COPY = {
     pele: {
-      prevencao: 'Um cuidado contínuo começa entendendo como sua pele está hoje, o que você quer preservar e quais hábitos fazem sentido para a sua rotina.',
+      prevencao: 'Um cuidado contínuo começa entendendo como sua pele está hoje, o que você quer preservar e quais hábitos cabem na sua rotina.',
       queixa: 'A avaliação pode começar pela queixa que mais chama sua atenção e seguir para uma leitura mais ampla da pele, sem respostas automáticas.',
-      possibilidades: 'Você não precisa saber o nome de um procedimento. O primeiro passo é entender quais caminhos existem e o que combina com a sua pele.',
-      'bem-estar': 'Cuidar da pele também pode ser um momento de pausa: uma experiência tranquila, com atenção à textura, ao conforto e à rotina.'
+      possibilidades: 'O primeiro passo é conhecer os caminhos que existem e descobrir, com calma, quais combinam com a sua pele.',
+      'bem-estar': 'Cuidar da pele também pode ser uma pausa: uma experiência tranquila, com atenção à textura, ao conforto e à rotina.'
     },
     rosto: {
       prevencao: 'Prevenção facial é acompanhar mudanças com naturalidade, preservar suas características e decidir com calma quando algum cuidado faz sentido.',
-      queixa: 'Podemos começar pelo que chama sua atenção, seja cansaço, firmeza ou contorno, e avaliar o conjunto antes de pensar em procedimentos.',
+      queixa: 'Podemos começar pelo que chama sua atenção, seja cansaço, firmeza ou contorno, e olhar o conjunto antes de pensar em procedimentos.',
       possibilidades: 'A conversa começa pelas possibilidades faciais que fazem sentido para o seu momento, sem pressa para escolher.',
-      'bem-estar': 'O cuidado facial pode ser menos sobre corrigir e mais sobre se sentir descansada, cuidada e confortável com a própria aparência.'
+      'bem-estar': 'O cuidado facial pode ser menos sobre corrigir e mais sobre se sentir bem com a própria aparência.'
     },
     corpo: {
-      prevencao: 'Um plano corporal pode partir de hábitos, textura, firmeza e continuidade, sempre respeitando sua rotina e objetivos realistas.',
+      prevencao: 'Um plano corporal pode partir de hábitos, textura, firmeza e continuidade, sempre com objetivos realistas.',
       queixa: 'Se existe uma região ou incômodo específico, a avaliação organiza essa queixa dentro de um olhar mais completo sobre o corpo.',
-      possibilidades: 'Você pode conhecer abordagens corporais sem escolher nada agora. A avaliação ajuda a comparar caminhos antes de decidir.',
-      'bem-estar': 'O cuidado corporal também pode ser uma experiência de pausa e atenção ao próprio corpo.'
+      possibilidades: 'Você pode conhecer as abordagens corporais sem escolher nada agora. A avaliação ajuda a comparar antes de decidir.',
+      'bem-estar': 'O cuidado corporal também pode ser uma experiência de pausa e de atenção ao próprio corpo.'
     },
     momento: {
-      prevencao: 'Criar espaço para cuidado antes de existir uma queixa também é uma forma de prevenção.',
+      prevencao: 'Reservar um tempo para si antes de existir uma queixa também é uma forma de prevenção.',
       queixa: 'Mesmo quando existe um incômodo específico, o atendimento pode começar por uma conversa tranquila sobre o seu momento.',
-      possibilidades: 'Se você só quer entender o que existe, essa é uma ótima forma de começar. Levamos esse contexto para a conversa.',
-      'bem-estar': 'Aqui o objetivo é simples: reservar um tempo para você, sem transformar cuidado em obrigação.'
+      possibilidades: 'Se a ideia é só entender o que existe, é um ótimo começo. Levamos esse contexto para a conversa.',
+      'bem-estar': 'Aqui o objetivo é simples: um tempo para você, sem transformar o cuidado em obrigação.'
     }
   };
 
   /* ---------- estado ---------- */
-  const state = { area: 'pele', intent: 'prevencao' };
-
+  const state = { area: null, intent: null, feel: null };
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (saved && AREAS[saved.area] && INTENTS[saved.intent]) Object.assign(state, saved);
-  } catch (_) { /* armazenamento indisponível: segue com o padrão */ }
+    if (saved && AREAS[saved.area] && INTENTS[saved.intent] && FEELS[saved.feel]) Object.assign(state, saved);
+  } catch (_) { /* armazenamento indisponível */ }
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const persist = () => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { /* ignora */ }
+  };
+  const complete = () => Boolean(state.area && state.intent && state.feel);
 
-  const pathLabel = () => `${AREAS[state.area].label} · ${INTENTS[state.intent]}`;
-
+  /* ---------- mensagens ---------- */
   const messages = {
-    geral: () => 'Olá! Vim pelo site da Clínica Aura e gostaria de agendar uma avaliação.',
-    caminho: () => `Olá! Vim pelo site da Clínica Aura. Escolhi "${AREAS[state.area].label}" e busco "${INTENTS[state.intent].toLowerCase()}". Gostaria de conversar sobre uma avaliação e entender o que faz sentido para mim.`,
-    procedimento: () => 'Olá! Vim pelo site da Clínica Aura. Já conheço um procedimento e gostaria de conversar para saber se ele é adequado para mim.',
-    duvidas: () => 'Olá! Vim pelo site da Clínica Aura e gostaria de tirar algumas dúvidas antes de agendar.',
-    protocolo: (el) => `Olá! Vim pelo site da Clínica Aura e gostaria de saber mais sobre o protocolo ${el.dataset.protocol}.`
+    geral: () => 'Olá! Vim pelo site da Aura e gostaria de agendar uma avaliação.',
+    carta: () => complete()
+      ? `Olá! Fiz a consulta no site da Aura. Quero cuidar ${AREAS[state.area].mine}, ${INTENTS[state.intent].phrase}, e busco uma sensação de ${FEELS[state.feel]}. Podemos conversar sobre uma avaliação?`
+      : messages.geral(),
+    procedimento: () => 'Olá! Vim pelo site da Aura. Já conheço um procedimento e gostaria de saber se ele é adequado para mim.',
+    duvidas: () => 'Olá! Vim pelo site da Aura e gostaria de tirar algumas dúvidas antes de agendar.',
+    ritual: (el) => `Olá! Vim pelo site da Aura e gostaria de saber mais sobre o ritual ${el.dataset.ritual}.`
   };
 
-  /* ---------- render ---------- */
-  const resultImage = $('#result-image');
-  const resultEl = $('.result');
-  let firstRender = true;
-  let pendingUpdate = null;
+  /* ---------- consulta em três passos ---------- */
+  const quiz = $('#quiz');
+  const steps = $$('.quiz-step', quiz);
+  const dots = $$('.quiz-progress span', quiz);
+  const count = $('#quiz-count');
+  const back = $('#quiz-back');
+  const letter = $('#letter');
+  const keys = ['area', 'intent', 'feel'];
+  let current = 0;
 
-  function render() {
-    const area = AREAS[state.area];
-    const update = () => {
-      $('#result-title').textContent = pathLabel();
-      $('#result-copy').textContent = COPY[state.area][state.intent];
-      $('#result-protocol').textContent = `Ponto de partida · ${area.protocol}`;
-      $('#result-message').textContent = messages.caminho();
-      $('#closing-path').textContent = pathLabel();
-      $('#wa-bar-topic').textContent = area.short;
+  function showStep(index, { focus = true } = {}) {
+    current = index;
+    steps.forEach((step, i) => {
+      const on = i === index;
+      step.hidden = !on;
+      step.classList.toggle('is-current', on);
+    });
+    dots.forEach((dot, i) => dot.classList.toggle('is-on', i <= index));
+    count.textContent = `Pergunta ${index + 1} de ${steps.length}`;
+    back.hidden = index === 0;
 
-      if (resultImage && resultImage.getAttribute('src') !== area.image) resultImage.src = area.image;
-      if (resultImage) {
-        resultImage.alt = area.alt;
-        resultImage.style.objectPosition = area.position;
-      }
+    // marca a resposta já escolhida, se houver
+    $$(`input[name="${keys[index]}"]`, steps[index]).forEach(input => { input.checked = input.value === state[keys[index]]; });
 
-      $$('.protocol-list li').forEach(li => li.classList.toggle('is-suggested', li.dataset.area === state.area));
-    };
-
-    if (firstRender || !resultEl || reducedMotion()) {
-      update();
-      firstRender = false;
-      return;
+    if (focus) {
+      const target = $(`input[name="${keys[index]}"]:checked`, steps[index]) || $('input', steps[index]);
+      target?.focus({ preventScroll: true });
     }
-    // cliques rápidos em sequência: só a última troca é aplicada
-    clearTimeout(pendingUpdate);
-    resultEl.classList.add('is-changing');
-    pendingUpdate = setTimeout(() => {
-      update();
-      resultEl.classList.remove('is-changing');
-    }, 180);
   }
 
-  function reducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function showLetter({ focus = true } = {}) {
+    const area = AREAS[state.area];
+    const intent = INTENTS[state.intent];
+    const today = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+
+    $('#letter-date').textContent = `Cuiabá, ${today}`;
+    $('#letter-text').textContent = `Você nos contou que quer cuidar ${area.care}, ${intent.phrase}, e que gostaria de sair daqui com uma sensação de ${FEELS[state.feel]}.`;
+    $('#letter-copy').textContent = COPY[state.area][state.intent];
+    $('#letter-ritual').textContent = `Um bom ponto de partida seria o ritual ${area.ritual}, sempre ajustado depois da avaliação.`;
+    $('#letter-message').textContent = messages.carta();
+
+    quiz.hidden = true;
+    letter.hidden = false;
+    $$('.ritual').forEach(li => li.classList.toggle('is-suggested', li.dataset.area === state.area));
+    if (focus) letter.focus({ preventScroll: true });
   }
 
-  // sincroniza os inputs com o estado salvo
-  $$('input[name="area"]').forEach(input => {
-    input.checked = input.value === state.area;
-    input.addEventListener('change', () => {
-      state.area = input.value;
-      persist();
-      render();
-    });
-  });
-
-  $$('input[name="intent"]').forEach(input => {
-    input.checked = input.value === state.intent;
-    input.addEventListener('change', () => {
-      state.intent = input.value;
-      persist();
-      render();
-    });
-  });
-
-  // atalhos do índice da abertura: chegam ao guia com a área já escolhida
-  $$('[data-pick]').forEach(link => link.addEventListener('click', () => {
-    const input = $(`input[name="area"][value="${link.dataset.pick}"]`);
-    if (!input) return;
-    input.checked = true;
-    state.area = input.value;
+  function restart() {
+    state.area = state.intent = state.feel = null;
     persist();
-    render();
-  }));
-
-  function persist() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { /* ignora */ }
+    letter.hidden = true;
+    quiz.hidden = false;
+    $$('.ritual').forEach(li => li.classList.remove('is-suggested'));
+    showStep(0);
   }
 
-  render();
+  let advanceTimer = null;
+  quiz.addEventListener('change', (event) => {
+    const input = event.target;
+    if (!input.matches('input[type="radio"]')) return;
+    state[input.name] = input.value;
+    persist();
+
+    // pequena pausa para a escolha ser vista antes de avançar
+    clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(() => {
+      if (current < steps.length - 1) showStep(current + 1);
+      else showLetter();
+    }, reducedMotion() ? 0 : 320);
+  });
+
+  // teclado: as setas trocam a opção (padrão do navegador); Enter confirma e avança
+  quiz.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && event.target.matches('input[type="radio"]')) {
+      event.preventDefault();
+      event.target.checked = true;
+      event.target.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  });
+  quiz.addEventListener('submit', (event) => event.preventDefault());
+
+  back.addEventListener('click', () => showStep(Math.max(0, current - 1)));
+  $('#quiz-restart').addEventListener('click', restart);
+
+  if (complete()) showLetter({ focus: false });
+  else showStep(0, { focus: false });
 
   /* ---------- WhatsApp ---------- */
   const dialog = $('#demo');
@@ -184,74 +195,78 @@
     if (event.target === dialog) dialog.close();
   });
 
-  /* ---------- menu mobile ---------- */
+  /* ---------- menu do celular ---------- */
   const toggle = $('.menu-toggle');
   const nav = $('#main-nav');
   const header = $('.site-header');
 
-  toggle?.addEventListener('click', () => {
-    const open = header.classList.toggle('menu-open');
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-  });
-
-  const closeMenu = () => {
-    header.classList.remove('menu-open');
-    toggle?.setAttribute('aria-expanded', 'false');
-    toggle?.setAttribute('aria-label', 'Abrir menu');
+  const setMenu = (open) => {
+    header.classList.toggle('menu-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
   };
 
-  $$('a', nav).forEach(a => a.addEventListener('click', closeMenu));
-
+  toggle?.addEventListener('click', () => setMenu(!header.classList.contains('menu-open')));
+  $$('a', nav).forEach(a => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && header.classList.contains('menu-open')) {
-      closeMenu();
+      setMenu(false);
       toggle?.focus();
     }
   });
 
-  /* ---------- barra de conversa (celular) ---------- */
-  const floatBtn = $('.wa-bar');
+  if (!('IntersectionObserver' in window)) return;
+
+  /* ---------- os quatro tempos: imagem acompanha a leitura ---------- */
+  const stageImgs = $$('.tempos-stage img');
+  const stageNum = $('#stage-num');
+  const stageName = $('#stage-name');
+  const tempos = $$('.tempo');
+
+  const tempoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const i = Number(entry.target.dataset.tempo);
+      tempos.forEach(t => t.classList.toggle('is-active', t === entry.target));
+      stageImgs.forEach(img => img.classList.toggle('is-active', Number(img.dataset.stage) === i));
+      stageNum.textContent = entry.target.querySelector('.numeral').textContent;
+      stageName.textContent = entry.target.querySelector('h3').textContent;
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  tempos.forEach(t => tempoObserver.observe(t));
+
+  /* ---------- barra de conversa no celular ---------- */
+  const bar = $('.wa-bar');
   const hero = $('.hero');
-  // a barra some onde já existe um botão de conversa visível (guia e chamada final)
-  const quietZones = $$('.guide, .closing');
+  const quietZones = $$('.consult, .closing');
+  let heroVisible = true;
+  const zoneState = new Map();
+  const syncBar = () => {
+    const inQuietZone = Array.from(zoneState.values()).some(Boolean);
+    bar.classList.toggle('is-visible', !heroVisible && !inQuietZone);
+  };
 
-  if ('IntersectionObserver' in window && floatBtn && hero) {
-    let heroVisible = true;
-    const visibleZones = new Map();
-    const sync = () => {
-      const inQuietZone = Array.from(visibleZones.values()).some(Boolean);
-      floatBtn.classList.toggle('is-visible', !heroVisible && !inQuietZone);
-    };
+  new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; syncBar(); }, { rootMargin: '-30% 0px 0px 0px' }).observe(hero);
+  const zoneObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => zoneState.set(entry.target, entry.isIntersecting));
+    syncBar();
+  });
+  quietZones.forEach(zone => zoneObserver.observe(zone));
 
-    new IntersectionObserver(([entry]) => {
-      heroVisible = entry.isIntersecting;
-      sync();
-    }, { rootMargin: '-30% 0px 0px 0px' }).observe(hero);
-
-    const zoneObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => visibleZones.set(entry.target, entry.isIntersecting));
-      sync();
+  /* ---------- entrada suave ---------- */
+  if (reducedMotion()) return;
+  document.documentElement.classList.add('js-reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      revealObserver.unobserve(entry.target);
     });
-    quietZones.forEach(zone => zoneObserver.observe(zone));
-  }
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
-  /* ---------- revelação suave ---------- */
-  const revealEls = $$('[data-reveal]');
-  if ('IntersectionObserver' in window && !reducedMotion()) {
-    document.documentElement.classList.add('js-reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        io.unobserve(entry.target);
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-
-    revealEls.forEach((el) => {
-      const siblings = Array.from(el.parentElement.children).filter(c => c.hasAttribute('data-reveal'));
-      el.style.setProperty('--delay', `${Math.min(siblings.indexOf(el), 5) * 70}ms`);
-      io.observe(el);
-    });
-  }
+  $$('[data-reveal]').forEach(el => {
+    const siblings = Array.from(el.parentElement.children).filter(c => c.hasAttribute('data-reveal'));
+    el.style.setProperty('--delay', `${Math.min(siblings.indexOf(el), 4) * 80}ms`);
+    revealObserver.observe(el);
+  });
 })();
