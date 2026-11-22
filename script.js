@@ -261,13 +261,16 @@
   });
   quietZones.forEach(zone => zoneObserver.observe(zone));
 
-  /* ---------- entrada suave ---------- */
-  /* com prefers-reduced-motion, o CSS deixa só a opacidade */
-  document.documentElement.classList.add('js-reveal');
+  /* ---------- movimento (GSAP + ScrollTrigger) ----------
+     Contrato: o CSS deixa tudo visível. Só dentro do matchMedia "sem redução de movimento"
+     o GSAP esconde e revela. Sem JS, sem GSAP ou com movimento reduzido, a página fica completa. */
+  const { gsap, ScrollTrigger } = window;
+  const releaseIntro = () => document.documentElement.classList.remove('motion-intro');
+  if (!gsap || !ScrollTrigger) { releaseIntro(); return; }
+  gsap.registerPlugin(ScrollTrigger);
 
-  /* divide os títulos em palavras para a entrada em máscara (o texto lido continua o mesmo) */
+  /* divide títulos em palavras dentro de uma máscara (o texto lido continua o mesmo) */
   const splitWords = (root) => {
-    let i = 0;
     const walk = (node) => {
       Array.from(node.childNodes).forEach(child => {
         if (child.nodeType === Node.ELEMENT_NODE) { walk(child); return; }
@@ -280,7 +283,6 @@
           outer.className = 'w';
           const inner = document.createElement('span');
           inner.className = 'wi';
-          inner.style.setProperty('--i', i++);
           inner.textContent = part;
           outer.appendChild(inner);
           frag.appendChild(outer);
@@ -289,21 +291,130 @@
       });
     };
     walk(root);
+    root.classList.add('is-split');
+    return $$('.wi', root);
   };
-  $$('[data-split]').forEach(splitWords);
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-in');
-      revealObserver.unobserve(entry.target);
+
+  const EASE_OUT = 'expo.out';
+  const mm = gsap.matchMedia();
+
+  mm.add({
+    motion: '(prefers-reduced-motion: no-preference)',
+    desktop: '(min-width: 768px)',
+    finePointer: '(hover: hover) and (pointer: fine)'
+  }, (context) => {
+    const { motion, desktop, finePointer } = context.conditions;
+    if (!motion) { releaseIntro(); return; }
+
+    const heroEl = $('.hero');
+    const heroTitle = $('#hero-title');
+    /* no celular o título da abertura não se esconde: ele é o maior elemento da tela (LCP) */
+    const splits = new Map($$('[data-split]').filter(el => desktop || el !== heroTitle).map(el => [el, splitWords(el)]));
+    const heroImg = $('.hero .frame-media img');
+
+    /* 1. abertura: uma única sequência, menos de 1,5 s (no celular, só esmaecimentos curtos) */
+    const intro = gsap.timeline({ defaults: { ease: EASE_OUT } });
+    if (desktop) {
+      intro
+        .from('.site-header', { autoAlpha: 0, y: -8, duration: 0.8 }, 0)
+        .from('.hero .label', { autoAlpha: 0, y: 12, duration: 0.8 }, 0.1)
+        .from(splits.get(heroTitle), { yPercent: 115, duration: 1, stagger: 0.04 }, 0.15)
+        .fromTo(heroImg, { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.18 },
+          { clipPath: 'inset(0% 0% 0% 0%)', scale: 1.08, duration: 1.3, ease: 'power4.inOut' }, 0.2)
+        .from('.hero-sub, .hero-actions', { autoAlpha: 0, y: 14, duration: 0.9, stagger: 0.1 }, 0.55);
+    } else {
+      intro.from('.hero-sub, .hero-actions', { autoAlpha: 0, y: 10, duration: 0.7, stagger: 0.08 }, 0.1);
+    }
+    releaseIntro();
+
+    /* 2. títulos das seções: palavras sobem quando entram na tela */
+    splits.forEach((words, el) => {
+      if (heroEl.contains(el)) return;
+      gsap.from(words, {
+        yPercent: 115, duration: 1, ease: EASE_OUT, stagger: 0.035,
+        scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+      });
     });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
-  $$('[data-split], [data-clip]').forEach(el => revealObserver.observe(el));
+    /* 3. blocos de texto: entrada curta (14 px), em lotes, uma vez só */
+    const blocks = $$('[data-reveal]').filter(el => !heroEl.contains(el));
+    gsap.set(blocks, { autoAlpha: 0, y: 14 });
+    ScrollTrigger.batch(blocks, {
+      start: 'top 88%', once: true,
+      onEnter: batch => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08, overwrite: true })
+    });
 
-  $$('[data-reveal]').forEach(el => {
-    const siblings = Array.from(el.parentElement.children).filter(c => c.hasAttribute('data-reveal'));
-    el.style.setProperty('--delay', `${Math.min(siblings.indexOf(el), 4) * 80}ms`);
-    revealObserver.observe(el);
+    /* 4. fotos: cortina de baixo para cima e assentamento */
+    $$('[data-clip]').forEach((el, index) => {
+      if (heroEl.contains(el)) return;
+      const img = el.tagName === 'IMG' ? el : $('img', el);
+      const contained = el.classList.contains('ritual-img') || el.classList.contains('house-plate');
+      gsap.fromTo(img,
+        { clipPath: 'inset(100% 0% 0% 0%)', scale: contained ? 1.16 : 1 },
+        { clipPath: 'inset(0% 0% 0% 0%)', scale: el.classList.contains('house-plate') && desktop ? 1.08 : 1,
+          duration: 1.3, ease: 'power4.inOut', delay: el.classList.contains('ritual-img') ? (index % 4) * 0.1 : 0,
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+    });
+
+    /* 5. números dos compromissos contam ao aparecer */
+    $$('.proof-num').forEach(num => {
+      const target = Number(num.dataset.count);
+      const counter = { v: 0 };
+      gsap.to(counter, {
+        v: target, duration: 1.4, ease: 'power2.out', snap: { v: 1 },
+        onUpdate: () => { num.textContent = String(Math.round(counter.v)); },
+        scrollTrigger: { trigger: num, start: 'top 90%', once: true }
+      });
+    });
+
+    /* 6. linha de progresso da leitura, no cabeçalho */
+    gsap.to('.scroll-progress', {
+      scaleX: 1, ease: 'none',
+      scrollTrigger: { start: 0, end: 'max', scrub: 0.4 }
+    });
+
+    /* 7. só no desktop: paralaxe leve e o trilho dos quatro tempos */
+    if (desktop) {
+      [[heroImg, '.hero .frame'], [$('.house-plate img'), '.house-plate']].forEach(([img, trigger]) => {
+        gsap.fromTo(img, { yPercent: -3 }, {
+          yPercent: 3, ease: 'none',
+          scrollTrigger: { trigger, start: 'top bottom', end: 'bottom top', scrub: 0.6 }
+        });
+      });
+      gsap.to('.stage-rail span', {
+        scaleY: 1, ease: 'none',
+        scrollTrigger: { trigger: '.tempos-list', start: 'top 60%', end: 'bottom 60%', scrub: 0.6 }
+      });
+    }
+
+    /* 8. botão principal da abertura com leve atração magnética (até 5 px), só com mouse */
+    if (finePointer) {
+      $$('.btn-magnetic').forEach(btn => {
+        const toX = gsap.quickTo(btn, 'x', { duration: 0.4, ease: 'power3.out' });
+        const toY = gsap.quickTo(btn, 'y', { duration: 0.4, ease: 'power3.out' });
+        const move = (event) => {
+          const r = btn.getBoundingClientRect();
+          toX(gsap.utils.clamp(-5, 5, (event.clientX - (r.left + r.width / 2)) * 0.12));
+          toY(gsap.utils.clamp(-5, 5, (event.clientY - (r.top + r.height / 2)) * 0.2));
+        };
+        const leave = () => { toX(0); toY(0); };
+        btn.addEventListener('pointermove', move);
+        btn.addEventListener('pointerleave', leave);
+        return () => { btn.removeEventListener('pointermove', move); btn.removeEventListener('pointerleave', leave); };
+      });
+    }
+
+    /* desfaz a divisão dos títulos se o usuário passar a pedir movimento reduzido */
+    return () => {
+      splits.forEach((words, el) => {
+        words.forEach(w => w.parentElement.replaceWith(document.createTextNode(w.textContent)));
+        el.normalize();
+        el.classList.remove('is-split');
+      });
+    };
   });
+
+  /* recalcula as posições depois das fontes e imagens */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+  window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
