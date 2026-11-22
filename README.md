@@ -13,7 +13,7 @@ Reboot completo (cores, fontes, imagens e arquitetura). A Aura está na faixa **
 - **Tipografia**: Bodoni Moda nos títulos (uma palavra em itálico por título) e Jost no texto, com rótulos em caixa alta espaçada.
 - **Arquitetura**: abertura com retrato em passe-partout · A casa (manifesto e fatos) · Os quatro tempos (lista com imagem fixa que troca conforme a rolagem) · A consulta (três perguntas, uma por vez, que geram a carta e a mensagem de WhatsApp) · Rituais (o sugerido é destacado) · Dúvidas · Fecho.
 - **Interações**: a consulta avança ao escolher, aceita teclado (setas e Enter), lembra a carta ao recarregar e pode ser refeita. Um botão preenchido por tela; no celular, uma barra discreta de conversa aparece fora das áreas com botão.
-- **Movimento**: subida de 12 px com `cubic-bezier(.22,1,.36,1)` e respeito a `prefers-reduced-motion`.
+- **Movimento** (skills animate e review-animations): títulos que sobem palavra por palavra atrás de uma máscara, fotos que abrem como cortina e assentam, paralaxe leve via `animation-timeline: view()`, botões com varredura no hover e links que redesenham o sublinhado. Só `transform`, `opacity`, `clip-path`, `scale` e `translate`, hover restrito a mouse, e `prefers-reduced-motion` deixa apenas esmaecimentos.
 
 ### Créditos das imagens (Unsplash)
 

@@ -229,8 +229,16 @@
       const i = Number(entry.target.dataset.tempo);
       tempos.forEach(t => t.classList.toggle('is-active', t === entry.target));
       stageImgs.forEach(img => img.classList.toggle('is-active', Number(img.dataset.stage) === i));
+      const nextName = entry.target.querySelector('h3').textContent;
+      if (stageName.textContent === nextName) return;
       stageNum.textContent = entry.target.querySelector('.numeral').textContent;
-      stageName.textContent = entry.target.querySelector('h3').textContent;
+      stageName.textContent = nextName;
+      const caption = stageName.parentElement;
+      caption.getAnimations().forEach(anim => anim.cancel());
+      caption.animate(
+        reducedMotion() ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 500, easing: 'cubic-bezier(.22, 1, .36, 1)' }
+      );
     });
   }, { rootMargin: '-45% 0px -45% 0px' });
   tempos.forEach(t => tempoObserver.observe(t));
@@ -254,8 +262,35 @@
   quietZones.forEach(zone => zoneObserver.observe(zone));
 
   /* ---------- entrada suave ---------- */
-  if (reducedMotion()) return;
+  /* com prefers-reduced-motion, o CSS deixa só a opacidade */
   document.documentElement.classList.add('js-reveal');
+
+  /* divide os títulos em palavras para a entrada em máscara (o texto lido continua o mesmo) */
+  const splitWords = (root) => {
+    let i = 0;
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach(child => {
+        if (child.nodeType === Node.ELEMENT_NODE) { walk(child); return; }
+        if (child.nodeType !== Node.TEXT_NODE || !child.textContent.trim()) return;
+        const frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          const outer = document.createElement('span');
+          outer.className = 'w';
+          const inner = document.createElement('span');
+          inner.className = 'wi';
+          inner.style.setProperty('--i', i++);
+          inner.textContent = part;
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        node.replaceChild(frag, child);
+      });
+    };
+    walk(root);
+  };
+  $$('[data-split]').forEach(splitWords);
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -263,6 +298,8 @@
       revealObserver.unobserve(entry.target);
     });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+  $$('[data-split], [data-clip]').forEach(el => revealObserver.observe(el));
 
   $$('[data-reveal]').forEach(el => {
     const siblings = Array.from(el.parentElement.children).filter(c => c.hasAttribute('data-reveal'));
